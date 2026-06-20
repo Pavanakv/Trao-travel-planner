@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-paper text-ink font-body;
+}
+
+/* Signature element: a postage-stamp style border used on trip cards and
+   the auth panel, reinforcing the "passport/travel document" motif. */
+.stamp-edge {
+  border: 2px dashed theme('colors.ink');
+  border-radius: 2px;
+  position: relative;
+}
+
+.stamp-edge::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid theme('colors.stamp');
+  border-radius: 1px;
+  pointer-events: none;
+}
