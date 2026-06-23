@@ -3,9 +3,21 @@ export default function BudgetCard({ budgetEstimate }) {
 
   return (
     <div className="stamp-edge bg-paper overflow-hidden">
-      <div className="bg-ink text-paper px-4 py-3">
-        <p className="text-[10px] uppercase tracking-widest text-paper/60">Boarding Pass</p>
-        <p className="font-display text-lg">Trip Budget</p>
+      <div className="bg-indigo text-paper px-4 py-3 flex items-center justify-between">
+        <div>
+          <p className="text-[10px] uppercase tracking-widest text-paper/60">Boarding Pass</p>
+          <p className="font-display text-lg">Trip Budget</p>
+        </div>
+        <svg
+          className="w-5 h-5 text-paper/50"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          aria-hidden="true"
+        >
+          <path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 6v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-6V7z" />
+        </svg>
       </div>
       <div className="p-4 text-sm space-y-2">
         <div className="flex justify-between">

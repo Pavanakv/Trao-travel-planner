@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
 import api from '../api/axios.js';
+import TopNav from '../components/TopNav.jsx';
+import TripCard from '../components/TripCard.jsx';
 
 const INTEREST_OPTIONS = ['Food', 'Culture', 'Adventure', 'Shopping', 'Nature', 'Nightlife'];
 
 export default function Dashboard() {
-  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,22 +53,19 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen px-4 py-8 max-w-3xl mx-auto">
-      <header className="flex items-center justify-between mb-10">
-        <h1 className="font-display text-3xl text-ink">Voyage</h1>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-ink/70">{user?.name}</span>
-          <button onClick={logout} className="text-sm text-stamp font-medium">
-            Sign out
-          </button>
-        </div>
-      </header>
+    <div className="min-h-screen px-4 py-8 max-w-4xl mx-auto">
+      <TopNav />
 
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="font-display text-2xl text-ink">Your Trips</h2>
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+        <div>
+          <p className="font-mono text-[10px] text-ink/40 uppercase tracking-widest mb-1">
+            VOY-{new Date().getFullYear()} / BOARDING
+          </p>
+          <h1 className="font-display text-2xl text-ink">Your Field Journals</h1>
+        </div>
         <button
           onClick={() => setShowForm((s) => !s)}
-          className="bg-ink text-paper text-sm font-medium px-4 py-2 rounded-sm hover:bg-teal transition-colors"
+          className="bg-indigo text-paper text-sm font-medium px-4 py-2 rounded-full hover:opacity-90 transition-opacity"
         >
           {showForm ? 'Cancel' : '+ New Trip'}
         </button>
@@ -152,10 +149,10 @@ export default function Dashboard() {
             disabled={creating}
             className="w-full bg-stamp text-paper font-medium py-2 rounded-sm hover:opacity-90 transition-opacity disabled:opacity-60"
           >
-            {creating ? 'Saving...' : 'Save trip'}
+            {creating ? 'Generating your itinerary...' : 'Save trip'}
           </button>
           <p className="text-xs text-ink/50 text-center">
-            We'll generate your itinerary, budget, hotels, and packing list right after you save.
+            We'll generate your itinerary, budget, hotels, and packing list right after you save - this can take a few seconds.
           </p>
         </form>
       )}
@@ -168,27 +165,9 @@ export default function Dashboard() {
           <p className="text-ink/60 text-sm">Add your first trip to get started.</p>
         </div>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid sm:grid-cols-2 gap-4">
           {trips.map((trip) => (
-            <Link
-              key={trip._id}
-              to={`/trips/${trip._id}`}
-              className="stamp-edge bg-paper p-5 flex items-center justify-between hover:bg-mustard/10 transition-colors"
-            >
-              <div>
-                <p className="font-mono text-[10px] text-ink/40 uppercase tracking-widest mb-1">
-                  VOY-{new Date(trip.createdAt).getFullYear()} · GATE-{trip._id.slice(-3).toUpperCase()}
-                </p>
-                <h3 className="font-display text-xl text-ink">{trip.destination}</h3>
-                <p className="text-sm text-ink/60">
-                  {trip.numDays} days &middot; {trip.budgetType} budget
-                  {trip.interests?.length ? ` · ${trip.interests.join(', ')}` : ''}
-                </p>
-              </div>
-              <span className="text-xs uppercase tracking-wide text-teal font-medium">
-                {trip.days?.length > 0 ? 'View plan' : 'Generation pending'}
-              </span>
-            </Link>
+            <TripCard key={trip._id} trip={trip} />
           ))}
         </div>
       )}

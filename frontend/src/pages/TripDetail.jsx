@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import api from '../api/axios.js';
+import TopNav from '../components/TopNav.jsx';
 import DayCard from '../components/DayCard.jsx';
 import BudgetCard from '../components/BudgetCard.jsx';
 import PackingList from '../components/PackingList.jsx';
@@ -139,14 +140,10 @@ export default function TripDetail() {
 
   return (
     <div className="min-h-screen px-4 py-8 max-w-6xl mx-auto">
-      <header className="flex items-center justify-between mb-8">
-        <Link to="/dashboard" className="font-display text-lg text-ink">
-          &larr; Voyage
-        </Link>
-        <button onClick={() => navigate('/dashboard')} className="text-sm text-ink/60 hover:text-stamp">
-          Sign out
-        </button>
-      </header>
+      <TopNav />
+      <Link to="/dashboard" className="text-sm text-teal font-medium mb-6 inline-block">
+        &larr; Back to Field Journals
+      </Link>
 
       <div className="flex items-start justify-between mb-6 flex-wrap gap-3">
         <div>
@@ -209,7 +206,7 @@ export default function TripDetail() {
                 </button>
               </div>
 
-              <div className="space-y-4">
+              <div className="stamp-edge bg-paper divide-y divide-dashed divide-ink/15">
                 {trip.days.map((day) => (
                   <DayCard
                     key={day.dayNumber}

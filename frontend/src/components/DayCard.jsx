@@ -24,7 +24,7 @@ export default function DayCard({ day, isCollapsed, onToggleCollapse, onAddActiv
   const instructionInputId = `instruction-day-${day.dayNumber}`;
 
   return (
-    <div className="stamp-edge bg-paper p-5">
+    <div className="p-5">
       <div className="flex items-center justify-between mb-3">
         <div>
           <p className="text-[11px] uppercase tracking-widest text-ink/40">
@@ -32,13 +32,25 @@ export default function DayCard({ day, isCollapsed, onToggleCollapse, onAddActiv
           </p>
           <h3 className="font-display text-lg text-ink">{dayLabel}</h3>
         </div>
-        <button
-          onClick={() => onToggleCollapse(day.dayNumber)}
-          className="text-xs text-ink/50 font-medium"
-          aria-expanded={!isCollapsed}
-        >
-          {isCollapsed ? 'Show activities' : 'Hide'}
-        </button>
+        <div className="flex items-center gap-3">
+          <svg
+            className="w-4 h-4 text-ink/25"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            aria-hidden="true"
+          >
+            <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
+          </svg>
+          <button
+            onClick={() => onToggleCollapse(day.dayNumber)}
+            className="text-xs text-ink/50 font-medium"
+            aria-expanded={!isCollapsed}
+          >
+            {isCollapsed ? 'Show activities' : 'Hide'}
+          </button>
+        </div>
       </div>
 
       {!isCollapsed && (

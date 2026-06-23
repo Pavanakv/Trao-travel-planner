@@ -1,6 +1,7 @@
 import Trip from '../models/Trip.js';
 import * as llm from '../services/llmService.js';
 import { sendError } from '../utils/errors.js';
+import { getDestinationPhoto, getHotelPhotos } from '../services/photoService.js';
 
 const BUDGET_TYPES = ['low', 'medium', 'high'];
 const MAX_DAYS = 30;
@@ -52,16 +53,25 @@ export async function createTrip(req, res) {
     let generated = { days: [], budgetEstimate: null, hotelSuggestions: [], packingList: [] };
     let generationError = null;
 
-    try {
-      generated = await llm.generateTripPlan({
+    // Run AI generation and the photo fetch in parallel - they're
+    // independent, so one failing should never block the other.
+    const [generationResult, photoUrl] = await Promise.all([
+      llm.generateTripPlan({
         destination: cleanDestination,
         numDays: cleanDays,
         budgetType,
         interests: cleanInterests,
-      });
-    } catch (err) {
-      console.error('Trip generation failed:', err.message);
-      generationError = 'AI generation failed. You can retry from the trip page.';
+      }).catch((err) => {
+        console.error('Trip generation failed:', err.message);
+        generationError = 'AI generation failed. You can retry from the trip page.';
+        return null;
+      }),
+      getDestinationPhoto(cleanDestination),
+    ]);
+
+    if (generationResult) {
+      generated = generationResult;
+      generated.hotelSuggestions = await getHotelPhotos(cleanDestination, generated.hotelSuggestions);
     }
 
     const trip = await Trip.create({
@@ -70,6 +80,7 @@ export async function createTrip(req, res) {
       numDays: cleanDays,
       budgetType,
       interests: cleanInterests,
+      photoUrl,
       days: generated.days,
       budgetEstimate: generated.budgetEstimate,
       hotelSuggestions: generated.hotelSuggestions,
@@ -134,8 +145,11 @@ export async function regeneratePlan(req, res) {
 
     trip.days = generated.days;
     trip.budgetEstimate = generated.budgetEstimate;
-    trip.hotelSuggestions = generated.hotelSuggestions;
+    trip.hotelSuggestions = await getHotelPhotos(trip.destination, generated.hotelSuggestions);
     trip.packingList = generated.packingList;
+    if (!trip.photoUrl) {
+      trip.photoUrl = await getDestinationPhoto(trip.destination);
+    }
     await trip.save();
 
     res.json({ trip });

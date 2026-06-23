@@ -17,7 +17,19 @@ export default function PackingList({ packingList, onToggle, onAdd }) {
 
   return (
     <div className="stamp-edge bg-paper p-4">
-      <h3 className="font-display text-lg text-ink mb-3">Packing List</h3>
+      <div className="flex items-center gap-2 mb-3">
+        <svg
+          className="w-4 h-4 text-ink/40"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          aria-hidden="true"
+        >
+          <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
+        </svg>
+        <h3 className="font-display text-lg text-ink">Packing List</h3>
+      </div>
 
       <ul className="space-y-2 mb-3">
         {packingList.map((item, idx) => {

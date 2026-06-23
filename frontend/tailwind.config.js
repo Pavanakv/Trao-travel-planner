@@ -4,11 +4,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        paper: '#F2E8D5',   // aged paper background
-        ink: '#1F2A44',     // navy ink for text/headers
-        stamp: '#C75D3D',   // postage-stamp terracotta, primary accent
-        teal: '#3F6B62',    // muted teal, secondary accent
-        mustard: '#D9A441', // mustard, tertiary/highlight
+        paper: '#FAFAF9',
+        ink: '#1F2A44',
+        stamp: '#C75D3D',
+        teal: '#3F6B62',
+        mustard: '#D9A441',
+        indigo: '#4B3B6B',
       },
       fontFamily: {
         display: ['Fraunces', 'serif'],

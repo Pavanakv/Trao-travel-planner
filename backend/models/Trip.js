@@ -11,8 +11,9 @@ const daySchema = new mongoose.Schema(
 const hotelSchema = new mongoose.Schema(
   {
     name: String,
-    tier: String, // Budget Friendly / Mid Range / Luxury
+    tier: String,
     note: String,
+    photoUrl: { type: String, default: null },
   },
   { _id: false }
 );
@@ -32,6 +33,7 @@ const tripSchema = new mongoose.Schema(
     numDays: { type: Number, required: true, min: 1, max: 30 },
     budgetType: { type: String, enum: ['low', 'medium', 'high'], required: true },
     interests: [{ type: String }],
+    photoUrl: { type: String, default: null },
 
     days: [daySchema],
     budgetEstimate: {
